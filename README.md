@@ -1,4 +1,4 @@
-# Backend - Proyecto final - RollingCode
+# Backend - Proyecto final Next Js - RollingCode
 
 ## Alcance del proyecto 💡
 
