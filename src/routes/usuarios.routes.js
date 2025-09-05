@@ -7,7 +7,7 @@ const router = Router();
 router.route("/").get( obtenerListaUsuarios)
 router.route("/registro").post( validarRegistro, crearUsuarioProfesorOAlumno)
 router.route("/login").post( validarLogin,loginUsuario)
-router.route("/nuevoAdmin").post( validarUsuario, crearUsuarioAdmin)
+router.route("/nuevo").post( validarUsuario, crearUsuarioAdmin)
 router.route("/:id").delete( borrarUsuario).put( editarUsuario).get( obtenerUsuario)
 router.route("/nuevopassword/:id").put( cambiarPassword)
 
