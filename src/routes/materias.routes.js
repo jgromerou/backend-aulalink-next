@@ -3,7 +3,7 @@ import { crearMateria, obtenerListaMaterias, obtenerListaMateriasActivas } from 
 import validarMateria from '../helpers/validarMateria';
 import validarJWT from '../helpers/tokenVerificacion';
 const router = Router();
-router.route('/').post([validarJWT,validarMateria],crearMateria).get(obtenerListaMaterias);
+router.route('/').post(crearMateria).get(obtenerListaMaterias);
 router.route('/activas').get(obtenerListaMateriasActivas);
 
 export default router;

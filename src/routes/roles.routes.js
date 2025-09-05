@@ -7,6 +7,6 @@ import { crearRol, editarRol, borrarRol, obtenerRol, obtenerListaRoles } from ".
 const router = Router();
 router.route("/").get(obtenerListaRoles)
 router.route("/nuevo").post(crearRol)
-router.route("/:id").delete(validarJWT, borrarRol).put(validarJWT, editarRol).get(validarJWT, obtenerRol)
+router.route("/:id").delete( borrarRol).put( editarRol).get( obtenerRol)
 
 export default router;

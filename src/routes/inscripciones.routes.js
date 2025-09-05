@@ -6,6 +6,6 @@ import { crearInscripcion, borrarInscripcion, listarInscripciones } from "../con
 const router = Router();
 router.route("/").post(crearInscripcion)
 router.route("/").get(listarInscripciones);
-router.route("/:id").delete(validarJWT,borrarInscripcion)
+router.route("/:id").delete(borrarInscripcion)
 
 export default router
