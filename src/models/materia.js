@@ -6,13 +6,19 @@ const materiaSchema = new Schema({
     required: true,
     unique: true,
     minLength: 2,
-    maxLength: 30,
+    maxLength: 150,
   },
   descripcion: {
     type: String,
     required: true,
     minLength: 2,
-    maxLength: 150,
+    maxLength: 255,
+  },
+  nivel: {
+    type: String,
+    required: true,
+    minLength: 1,
+    maxLength: 3
   },
   estado: {
     type: Number,

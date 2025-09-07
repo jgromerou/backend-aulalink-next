@@ -8,6 +8,7 @@ export const crearMateria = async (req, res) => {
       mensaje: 'La materia fue creada correctamente',
     });
   } catch (error) {
+    console.log(error);
     res.status(404).json({
       mensaje: 'Error. No se pudo crear la materia',
     });
@@ -33,6 +34,66 @@ export const obtenerListaMateriasActivas = async (req, res) => {
     res.status(404).json({
       mensaje:
         'Error. No se pudo obtener la lista de materias en estado Activo.',
+    });
+  }
+};
+
+export const obtenerMateria = async (req, res) => {
+  try {
+    const materia = await Materia.findById(req.params.id)
+
+    if (!materia) return res.status(404).json({ mensaje: "Materia no encontrada" });
+
+    res.status(200).json(materia);
+  } catch (error) {
+    res.status(500).json({
+      mensaje: "Error. No se pudo obtener la materia",
+      error: error.message
+    });
+  }
+};
+
+export const editarMateria = async (req, res) => {
+  try {
+    const { nombreMateria, descripcion, nivel, estado } = req.body;
+    console.log({nombreMateria, descripcion, nivel, estado})
+    const materia = await Materia.findById(req.params.id);
+    if (!materia) {
+      return res.status(404).json({
+        mensaje: "La materia no fue encontrada.",
+      });
+    }
+    materia.nombreMateria = nombreMateria;
+    materia.descripcion = descripcion;
+    materia.nivel = nivel;
+    materia.estado = estado;
+    await materia.save();
+    res.status(200).json({
+      mensaje: "Materia actualizada exitosamente.",
+    });
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({
+      mensaje: "No se pudo actualizar la materia correctamente.",
+    });
+  }
+};
+
+export const borrarMateria = async (req, res) => {
+  try {
+    const materia = await Materia.findById(req.params.id);
+    if (!materia) {
+      return res.status(404).json({
+        mensaje: "La materia no fue encontrada.",
+      });
+    }
+    await Materia.findByIdAndDelete(req.params.id);
+    res.status(200).json({
+      mensaje: "Materia eliminada exitosamente.",
+    });
+  } catch (error) {
+    res.status(400).json({
+      mensaje: "No se pudo eliminar la materia.",
     });
   }
 };

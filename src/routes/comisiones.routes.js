@@ -5,8 +5,9 @@ import validarJWT from "../helpers/tokenVerificacion";
 
 
 const router = Router();
-router.route("/").post(crearComision).get(obtenerListaComisiones)
+router.route("/").get(obtenerListaComisiones)
 router.route("/activos").get(obtenerComisionesActivas)
+router.route("/nuevo").post(crearComision)
 router.route("/:id").get(obtenerComision).delete( borrarComision).put( editarComision)
 router.route("/comision/:materia").get(consultaComisionesPorMateria)
 router.route("/activar/:id").put( activarComision)
