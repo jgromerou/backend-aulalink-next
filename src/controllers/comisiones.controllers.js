@@ -5,8 +5,8 @@ import Usuario from "../models/usuario";
 
 export const crearComision = async (req, res) => {
     try{
-        const nombreMateria = req.body.nombreMateria;
-        const email = req.body.email;
+        const idmateria = req.body.materia;
+        const idusuario = req.body.usuario;
 
         const resto = {
           nombreComision: req.body.nombreComision,
@@ -15,19 +15,20 @@ export const crearComision = async (req, res) => {
           horaInicio: req.body.horaInicio,
           horaFin: req.body.horaFin,
           diasDictado: req.body.diasDictado,
-          cupo: req.body.cupo
+          cupo: req.body.cupo,
+          estado: req.body.estado
         };
 
         // Buscar materia por nombre
-        const materiaDoc = await Materia.findOne({ nombreMateria: nombreMateria });
+        const materiaDoc = await Materia.findOne({ _id: idmateria });
         if (!materiaDoc) {
-          return res.status(400).json({ error: `Materia '${nombreMateria}' no encontrada` });
+          return res.status(400).json({ error: `Materia '${materiaDoc.nombreMateria}' no encontrada` });
         }
 
         // Buscar usuario por email
-        const usuarioDoc = await Usuario.findOne({ email: email });
+        const usuarioDoc = await Usuario.findOne({ _id: idusuario });
         if (!usuarioDoc) {
-          return res.status(400).json({ error: `Usuario con '${email}' no encontrado` });
+          return res.status(400).json({ error: `Usuario con '${usuarioDoc.nombreUsuario}' '${usuarioDoc.apellidoUsuario}' no encontrado` });
         }
 
         const nuevaComision = new Comision({

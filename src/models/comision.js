@@ -6,7 +6,7 @@ const comisionSchema = new Schema({
     required: true,
     unique: true,
     minLength: 2,
-    maxLength: 100,
+    maxLength: 150,
   },
   fechaInicio: {
     type: Date,

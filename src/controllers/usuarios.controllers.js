@@ -152,9 +152,10 @@ export const editarUsuario = async (req, res) => {
 
 export const obtenerListaUsuarios = async (req, res) => {
   try {
-    const usuarios = await Usuario.find();
+    const usuarios = await Usuario.find().populate("role","_id nombreRol");
     res.status(200).json(usuarios);
   } catch (error) {
+    console.log(error)
     res.status(404).json({
       mensaje: "Error. No se pudo obtener la lista de usuarios",
     });
@@ -163,11 +164,29 @@ export const obtenerListaUsuarios = async (req, res) => {
 
 export const obtenerUsuario = async (req, res) => {
   try {
-    const usuario = await Usuario.findById(req.params.id);
-    res.status(200).json(usuario);
+    const usuario = await Usuario.findById(req.params.id)
+      .populate("role", "nombreRol")
+      .lean(); // devuelve un objeto plano ya, no un documento Mongoose
+
+    if (!usuario) return res.status(404).json({ mensaje: "Usuario no encontrado" });
+
+    const { _id, nombreUsuario, apellidoUsuario, dni, email, password, estado } = usuario;
+    const usuarioConRolNombre = {
+      _id,
+      nombreUsuario,
+      apellidoUsuario,
+      dni,
+      email,
+      password,
+      estado,
+      role: usuario.role.nombreRol
+    };
+
+    res.status(200).json(usuarioConRolNombre);
   } catch (error) {
-    res.status(404).json({
+    res.status(500).json({
       mensaje: "Error. No se pudo obtener el usuario",
+      error: error.message
     });
   }
 };
