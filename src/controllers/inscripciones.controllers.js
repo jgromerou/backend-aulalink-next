@@ -73,6 +73,35 @@ export const borrarInscripcion = async (req, res) => {
   }
 };
 
+export const obtenerInscripcion = async (req, res) =>{
+  try{
+     const inscripcion = await Inscripcion.findById(req.params.id);
+     res.status(200).json(inscripcion);
+  }catch(error){
+      res.status(404).json({
+          mensaje: "Error, no se pudo obtener la inscripción del alumno."
+      })
+  }
+}
+
+export const editarInscripcion = async (req, res) => {
+  try {
+    await Inscripcion.findByIdAndUpdate(req.params.id, req.body);
+    res.status(200).json({
+      mensaje: 'La inscripción fue editada correctamente.',
+    });
+  } catch (error) {
+    if(error.code === 11000){
+      return res.status(404).json({
+        mensaje: 'Este nombre de inscripción ya existe. Intente con otro.',
+      });
+    }
+    res.status(404).json({
+      mensaje: 'Error, no se pudo editar la inscripción.',
+    });
+  }
+};
+
 // export const obtenerListaInscripcionesAlumnos = async (req, res) => {
 //   try {
 //     const pedidos = await Pedido.find()
