@@ -3,6 +3,8 @@ import generarJWT from "../helpers/tokenLogin";
 import Role from "../models/role";
 import Usuario from "../models/usuario";
 import bcrypt from "bcrypt";
+import Comision from '../models/comision';
+import Inscripcion from '../models/inscripcion';
 
 export const crearUsuarioAdmin = async (req, res) => {
   try {
@@ -108,17 +110,33 @@ export const loginUsuario = async (req, res) => {
 
 export const borrarUsuario = async (req, res) => {
   try {
-    const usuario = await Usuario.findById(req.params.id);
+    const {id} = req.params;
+    const usuario = await Usuario.findById(id);
     if (!usuario) {
       return res.status(404).json({
         mensaje: "El usuario no fue encontrado.",
       });
     }
-    await Usuario.findByIdAndDelete(req.params.id);
+
+    const comisionesConUsuario = await Comision.find({ usuario: id });
+    if (comisionesConUsuario.length > 0) {
+      return res.status(400).json({
+        mensaje: "No se puede borrar este usuario porque está asignada a una o más comisiones",
+      });
+    }
+
+    const insripcionesConUsuario = await Inscripcion.find({ usuario: id });
+    if (insripcionesConUsuario.length > 0) {
+      return res.status(400).json({
+        mensaje: "No se puede borrar este usuario porque está asignada a una o más inscripciones",
+      });
+    }
+    await Usuario.findByIdAndDelete(id);
     res.status(200).json({
       mensaje: "Usuario eliminado exitosamente.",
     });
   } catch (error) {
+    console.log(error)
     res.status(400).json({
       mensaje: "No se pudo eliminar el usuario.",
     });

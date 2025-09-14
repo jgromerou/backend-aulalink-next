@@ -1,4 +1,5 @@
 import Materia from '../models/materia';
+import Comision from '../models/comision';
 
 export const crearMateria = async (req, res) => {
   try {
@@ -81,17 +82,29 @@ export const editarMateria = async (req, res) => {
 
 export const borrarMateria = async (req, res) => {
   try {
-    const materia = await Materia.findById(req.params.id);
+
+    const { id } = req.params
+
+    const materia = await Materia.findById(id);
     if (!materia) {
       return res.status(404).json({
         mensaje: "La materia no fue encontrada.",
       });
     }
-    await Materia.findByIdAndDelete(req.params.id);
+    // Verificar si hay comisiones con esta materia
+    const comisionesConMaterias = await Comision.find({ materia: id });
+
+    if (comisionesConMaterias.length > 0) {
+      return res.status(400).json({
+        mensaje: "No se puede borrar esta materia porque está asignada a una o más comisiones",
+      });
+    }
+    await Materia.findByIdAndDelete(id);
     res.status(200).json({
       mensaje: "Materia eliminada exitosamente.",
     });
   } catch (error) {
+    console.log(error)
     res.status(400).json({
       mensaje: "No se pudo eliminar la materia.",
     });
