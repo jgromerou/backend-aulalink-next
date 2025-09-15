@@ -102,10 +102,10 @@ export const editarInscripcion = async (req, res) => {
 
 export const verificarInscripcion = async (req, res) => {
   try {
-    const { alumno, materia } = req.body;
+    const { usuario, materia } = req.body;
 
     const existe = await Inscripcion.findOne({
-      alumno: alumno,
+      usuario: usuario,
       materia: materia
     });
 
