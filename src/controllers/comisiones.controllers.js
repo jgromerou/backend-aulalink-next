@@ -1,6 +1,7 @@
 import Comision from "../models/comision";
 import Materia from "../models/materia";
 import Usuario from "../models/usuario";
+import Inscripcion from "../models/inscripcion";
 
 
 export const crearComision = async (req, res) => {
@@ -96,16 +97,31 @@ export const obtenerComision = async (req, res) =>{
   }
 }
 
-export const borrarComision = async (req, res) =>{
-  try{
-     await Comision.findByIdAndDelete(req.params.id);
-     res.status(200).json({
+export const borrarComision = async (req, res) => {
+  try {
+    const { id } = req.params
+    const comision = await Comision.findById(id);
+    if (!comision) {
+      return res.status(404).json({
+        mensaje: "La comisión no fue encontrada.",
+      });
+    }
+    const inscripcionesConComision = await Inscripcion.find({ comision: id });
+
+    if (inscripcionesConComision.length > 0) {
+      return res.status(400).json({
+        mensaje: "No se puede borrar esta comision porque está asignada a una o más inscripciones",
+      });
+    }
+    await Comision.findByIdAndDelete(id);
+    res.status(200).json({
       mensaje: "La comisión fue eliminada correctamente"
-     })
-  }catch(error){
-      res.status(404).json({
-          mensaje: "Error, la comisión no se pudo borrar"
-      })
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(404).json({
+      mensaje: "Error, la comisión no se pudo borrar"
+    })
   }
 };
 

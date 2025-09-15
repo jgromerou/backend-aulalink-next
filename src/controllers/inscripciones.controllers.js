@@ -5,23 +5,23 @@ import Usuario from '../models/usuario';
 
 export const crearInscripcion = async (req, res) => {
   try {
-    const { nombreComision, nombreMateria, email, fechaInscripcion } = req.body;
+    const { comision, materia, usuario, fechaInscripcion } = req.body;
 
     // Buscar las referencias
-    const comision = await Comision.findOne({ nombreComision });
-    if (!comision) return res.status(404).json({ msg: 'Comisión no encontrada' });
+     const materiaDoc = await Materia.findById( materia );
+    if (!materiaDoc) return res.status(404).json({ msg: 'Materia no encontrada' });
 
-    const materia = await Materia.findOne({ nombreMateria });
-    if (!materia) return res.status(404).json({ msg: 'Materia no encontrada' });
+    const comisionDoc = await Comision.findById( comision );
+    if (!comisionDoc) return res.status(404).json({ msg: 'Comisión no encontrada' });
 
-    const usuario = await Usuario.findOne({ email });
-    if (!usuario) return res.status(404).json({ msg: 'Usuario no encontrado' });
+    const usuarioDoc = await Usuario.findById( usuario );
+    if (!usuarioDoc) return res.status(404).json({ msg: 'Usuario no encontrado' });
 
     // Crear inscripción
     const inscripcion = new Inscripcion({
-      comision: comision._id,
-      materia: materia._id,
-      usuario: usuario._id,
+      comision: comisionDoc._id,
+      materia: materiaDoc._id,
+      usuario: usuarioDoc._id,
       fechaInscripcion: fechaInscripcion || Date.now(),
       estado: 1
     });

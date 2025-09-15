@@ -1,4 +1,5 @@
 import Role from "../models/role";
+import Usuario from "../models/usuario";
 
 export const crearRol = async (req, res) => {
   try {
@@ -52,17 +53,28 @@ export const editarRol = async (req, res) => {
 
 export const borrarRol = async (req, res) => {
   try {
-    const rol = await Rol.findById(req.params.id);
+    const {id} = req.params;
+
+    const rol = await Role.findById(id);
     if (!rol) {
       return res.status(404).json({
         mensaje: "El rol no fue encontrado.",
       });
     }
-    await Role.findByIdAndDelete(req.params.id);
+     // Verificar si hay usuarios con este rol
+     const usuariosConRol = await Usuario.find({ role: id });
+
+     if (usuariosConRol.length > 0) {
+        return res.status(400).json({
+        mensaje: "No se puede borrar este rol porque está asignado a uno o más usuarios",
+      });
+    }
+    await Role.findByIdAndDelete(id);
     res.status(200).json({
       mensaje: "Rol eliminado exitosamente.",
     });
   } catch (error) {
+    console.log(error)
     res.status(400).json({
       mensaje: "No se pudo eliminar el rol.",
     });
