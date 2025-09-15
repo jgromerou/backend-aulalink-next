@@ -91,7 +91,7 @@ export const borrarMateria = async (req, res) => {
         mensaje: "La materia no fue encontrada.",
       });
     }
-    // Verificar si hay comisiones con esta materia
+
     const comisionesConMaterias = await Comision.find({ materia: id });
 
     if (comisionesConMaterias.length > 0) {

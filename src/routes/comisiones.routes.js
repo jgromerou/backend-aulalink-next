@@ -1,7 +1,5 @@
 import { Router } from "express";
-//import validarProducto from "../helpers/validarProducto";
 import { activarComision, borrarComision, consultaComisionesPorMateria, crearComision, desactivarComisión, editarComision, obtenerComision, obtenerComisionesActivas, obtenerComisionesPorMateria, obtenerListaComisiones } from "../controllers/comisiones.controllers";
-import validarJWT from "../helpers/tokenVerificacion";
 
 
 const router = Router();

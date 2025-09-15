@@ -21,7 +21,7 @@ export const validarUsuario = [
   check("dni")
     .notEmpty()
     .withMessage("El DNI es obligatorio")
-    .isInt({ min: 1, max: 99999999 }) // puedes ajustar los rangos según tu país
+    .isInt({ min: 1, max: 99999999 }) 
     .withMessage("El DNI debe ser un número entero válido"),
 
   check(`email`)
@@ -46,7 +46,7 @@ export const validarUsuario = [
   check("role")
     .notEmpty()
     .withMessage("El rol es obligatorio")
-    .isIn(["admin", "profesor", "alumno"]) // lista de roles válidos
+    .isIn(["admin", "profesor", "alumno"]) 
     .withMessage("El rol debe ser uno de los valores válidos"),
 
   (req, res, next) => {
@@ -88,7 +88,7 @@ export const validarRegistro = [
   check("dni")
     .notEmpty()
     .withMessage("El DNI es obligatorio")
-    .isInt({ min: 1, max: 99999999 }) // puedes ajustar los rangos según tu país
+    .isInt({ min: 1, max: 99999999 }) 
     .withMessage("El DNI debe ser un número entero válido"),
 
   check(`email`)
@@ -113,7 +113,7 @@ export const validarRegistro = [
   check("role")
     .notEmpty()
     .withMessage("El rol es obligatorio")
-    .isIn(["admin", "profesor", "alumno"]) // lista de roles válidos
+    .isIn(["admin", "profesor", "alumno"]) 
     .withMessage("El rol debe ser uno de los valores válidos"),
 
   (req, res, next) => {

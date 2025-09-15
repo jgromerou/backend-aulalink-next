@@ -14,11 +14,6 @@ const validarMateria = [
     .isString()
     .isLength({min:2, max:255})
     .withMessage("La descripción de la materia debe contener entre 2 y 255 caracteres"),
-    // check(`estado`)
-    // .notEmpty()
-    // .withMessage("El estado es un dato obligatorio")
-    // .isIn([1,0])
-    // .withMessage("Debe elegir una opción válida"),
 
     (req, res, next) => {resultadoValidacion(req, res, next)}
 ]

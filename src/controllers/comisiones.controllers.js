@@ -20,13 +20,11 @@ export const crearComision = async (req, res) => {
           estado: req.body.estado
         };
 
-        // Buscar materia por nombre
         const materiaDoc = await Materia.findOne({ _id: idmateria });
         if (!materiaDoc) {
           return res.status(400).json({ error: `Materia '${materiaDoc.nombreMateria}' no encontrada` });
         }
 
-        // Buscar usuario por email
         const usuarioDoc = await Usuario.findOne({ _id: idusuario });
         if (!usuarioDoc) {
           return res.status(400).json({ error: `Usuario con '${usuarioDoc.nombreUsuario}' '${usuarioDoc.apellidoUsuario}' no encontrado` });
