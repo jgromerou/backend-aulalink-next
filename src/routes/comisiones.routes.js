@@ -1,6 +1,6 @@
 import { Router } from "express";
 //import validarProducto from "../helpers/validarProducto";
-import { activarComision, borrarComision, consultaComisionesPorMateria, crearComision, desactivarComisión, editarComision, obtenerComision, obtenerComisionesActivas, obtenerListaComisiones } from "../controllers/comisiones.controllers";
+import { activarComision, borrarComision, consultaComisionesPorMateria, crearComision, desactivarComisión, editarComision, obtenerComision, obtenerComisionesActivas, obtenerComisionesPorMateria, obtenerListaComisiones } from "../controllers/comisiones.controllers";
 import validarJWT from "../helpers/tokenVerificacion";
 
 
@@ -12,5 +12,6 @@ router.route("/:id").get(obtenerComision).delete( borrarComision).put( editarCom
 router.route("/comision/:materia").get(consultaComisionesPorMateria)
 router.route("/activar/:id").put( activarComision)
 router.route("/desactivar/:id").put( desactivarComisión)
+router.get("/materia/:id", obtenerComisionesPorMateria);
 
 export default router;

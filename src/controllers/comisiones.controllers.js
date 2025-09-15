@@ -195,3 +195,24 @@ export const obtenerComisionesActivas = async (req, res) => {
     });
   }
 };
+
+export const obtenerComisionesPorMateria = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const comisionesPorMateria = await Comision.find({ materia: id });
+
+    if (!comisionesPorMateria || comisionesPorMateria.length === 0) {
+      return res.status(404).json({
+        mensaje: "No se encontraron comisiones para esta materia."
+      });
+    }
+
+    res.status(200).json(comisionesPorMateria);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      mensaje: "Error al obtener las comisiones de la materia."
+    });
+  }
+};
