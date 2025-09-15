@@ -1,4 +1,3 @@
-//import envioEmail from "../helpers/envioEmailRegistrarse";
 import generarJWT from "../helpers/tokenLogin";
 import Role from "../models/role";
 import Usuario from "../models/usuario";
@@ -16,7 +15,7 @@ export const crearUsuarioAdmin = async (req, res) => {
       });
     }
     let roleId;
-    // Buscar el ObjectId del rol "admin" en la colección de roles
+    
     if (role === 'admin') {
       const adminRole = await Role.findOne({ nombreRol: 'admin' });
       if (!adminRole) {
@@ -26,7 +25,7 @@ export const crearUsuarioAdmin = async (req, res) => {
       }
       roleId = adminRole._id;
     }
-       // Buscar el ObjectId del rol "profesor" en la colección de roles
+       
     if (role === 'profesor') {
       const profesorRole = await Role.findOne({ nombreRol: 'profesor' });
       if (!profesorRole) {
@@ -36,7 +35,7 @@ export const crearUsuarioAdmin = async (req, res) => {
       }
       roleId = profesorRole._id;
     }
-    // Buscar el ObjectId del rol "alumno" en la colección de roles
+   
     if (role === 'alumno') {
       const alumnoRole = await Role.findOne({ nombreRol: 'alumno' });
       if (!alumnoRole) {
@@ -47,7 +46,6 @@ export const crearUsuarioAdmin = async (req, res) => {
       roleId = alumnoRole._id;
     }
     const usuarioData = Object.assign({}, req.body, { role: roleId });
-    //console.log(usuarioData);
     usuario = new Usuario(usuarioData);
     const salt = bcrypt.genSaltSync(10);
     if (!salt) {
@@ -186,7 +184,7 @@ export const obtenerUsuario = async (req, res) => {
   try {
     const usuario = await Usuario.findById(req.params.id)
       .populate("role", "nombreRol")
-      .lean(); // devuelve un objeto plano ya, no un documento Mongoose
+      .lean();
 
     if (!usuario) return res.status(404).json({ mensaje: "Usuario no encontrado" });
 
@@ -222,7 +220,7 @@ export const crearUsuarioProfesorOAlumno = async (req, res) => {
     }
     console.log(usuario);
     let roleId;
-        // Buscar el ObjectId del rol "profesor" en la colección de roles
+      
     if (role === 'profesor') {
       const profesorRole = await Role.findOne({ nombreRol: 'profesor' });
       if (!profesorRole) {
@@ -232,7 +230,7 @@ export const crearUsuarioProfesorOAlumno = async (req, res) => {
       }
       roleId = profesorRole._id;
     }
-    // Buscar el ObjectId del rol "alumno" en la colección de roles
+   
     if (role === 'alumno') {
       const alumnoRole = await Role.findOne({ nombreRol: 'alumno' });
       if (!alumnoRole) {
@@ -257,7 +255,7 @@ export const crearUsuarioProfesorOAlumno = async (req, res) => {
       nombre: usuario.nombreUsuario,
       uid: usuario._id,
     });
-    //envioEmail(usuario.nombreUsuario, usuario.email);
+    
   } catch (error) {
     console.log(error)
     res.status(400).json({

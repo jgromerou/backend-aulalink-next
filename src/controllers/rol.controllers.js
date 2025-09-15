@@ -61,7 +61,7 @@ export const borrarRol = async (req, res) => {
         mensaje: "El rol no fue encontrado.",
       });
     }
-     // Verificar si hay usuarios con este rol
+   
      const usuariosConRol = await Usuario.find({ role: id });
 
      if (usuariosConRol.length > 0) {
