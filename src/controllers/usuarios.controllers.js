@@ -72,7 +72,7 @@ export const crearUsuarioAdmin = async (req, res) => {
 export const loginUsuario = async (req, res) => {
   try {
     const { email, password } = req.body;
-    let usuario = await Usuario.findOne({ email });
+    let usuario = await Usuario.findOne({ email }).populate("role", "nombreRol");
     const { nombreUsuario } = usuario;
     if (!usuario) {
       return res.status(400).json({
@@ -98,8 +98,10 @@ export const loginUsuario = async (req, res) => {
       nombreUsuario: usuario.nombreUsuario,
       _id: usuario._id,
       email: usuario.email,
+      rol: usuario.role,
       token,
     });
+
   } catch (error) {
     console.log(error)
     res.status(404).json({
