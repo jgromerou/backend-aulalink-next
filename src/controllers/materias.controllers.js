@@ -18,11 +18,25 @@ export const crearMateria = async (req, res) => {
 
 export const obtenerListaMaterias = async (req, res) => {
   try {
-    const materias = await Materia.find();
+    // Obtener query param
+    const { search } = req.query;
+
+    let materias;
+
+    if (search) {
+      // Si viene el parámetro search, filtramos por nombre (o campo que quieras)
+      materias = await Materia.find({
+        nombreMateria: { $regex: search, $options: "i" } // "i" = case insensitive
+      });
+    } else {
+      // Si no hay search, traer todas
+      materias = await Materia.find();
+    }
+
     res.status(200).json(materias);
   } catch (error) {
     res.status(404).json({
-      mensaje: 'Error. No se pudo obtener la lista de materias',
+      mensaje: "Error. No se pudo obtener la lista de materias",
     });
   }
 };
