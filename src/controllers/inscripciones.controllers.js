@@ -102,18 +102,17 @@ export const editarInscripcion = async (req, res) => {
 
 export const verificarInscripcion = async (req, res) => {
   try {
-    const { alumno, comision, materia } = req.body;
+    const { alumno, materia } = req.body;
 
     const existe = await Inscripcion.findOne({
       alumno: alumno,
-      comision: comision,
       materia: materia
     });
 
     if (existe) {
       return res.status(200).json({
         inscripto: true,
-        mensaje: "El alumno ya está inscripto en esta comisión de la materia."
+        mensaje: "El alumno ya está inscripto en esta materia."
       });
     }
 
