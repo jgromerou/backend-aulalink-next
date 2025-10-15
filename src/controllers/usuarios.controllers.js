@@ -4,6 +4,7 @@ import Usuario from "../models/usuario";
 import bcrypt from "bcrypt";
 import Comision from '../models/comision';
 import Inscripcion from '../models/inscripcion';
+import envioEmail from "../helpers/envioEmailRegistrarse";
 
 export const crearUsuarioAdmin = async (req, res) => {
   try {
@@ -241,7 +242,7 @@ export const crearUsuarioProfesorOAlumno = async (req, res) => {
       roleId = alumnoRole._id;
     }
     const usuarioData = Object.assign({}, req.body, { role: roleId });
-    console.log(usuarioData);
+
     usuario = new Usuario(usuarioData);
     const salt = bcrypt.genSaltSync(10);
     if (!salt) {
@@ -256,6 +257,7 @@ export const crearUsuarioProfesorOAlumno = async (req, res) => {
       uid: usuario._id,
     });
     
+    envioEmail(usuario.nombreUsuario, usuario.email);
   } catch (error) {
     console.log(error)
     res.status(400).json({
