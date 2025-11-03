@@ -161,6 +161,9 @@ export const editarUsuario = async (req, res) => {
     await usuario.save();
     res.status(200).json({
       mensaje: "Usuario actualizado exitosamente.",
+      nombre: usuario.nombreUsuario,
+      apellido: usuario.apellidoUsuario,
+      uid: usuario._id,
     });
   } catch (error) {
     res.status(400).json({
