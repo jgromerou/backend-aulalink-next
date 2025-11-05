@@ -189,7 +189,6 @@ export const editarUsuario = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       mensaje: "No se pudo actualizar el usuario correctamente.",
-      error: error.message
     });
   }
 };
