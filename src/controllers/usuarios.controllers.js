@@ -146,7 +146,7 @@ export const borrarUsuario = async (req, res) => {
 
 export const editarUsuario = async (req, res) => {
   try {
-    const { email, password, nombreUsuario, apellidoUsuario, estado, perfil } = req.body;
+    const { email, password, nombreUsuario, apellidoUsuario, estado, role } = req.body;
     const usuario = await Usuario.findById(req.params.id);
     if (!usuario) {
       return res.status(404).json({
@@ -157,13 +157,12 @@ export const editarUsuario = async (req, res) => {
     usuario.nombreUsuario = nombreUsuario;
     usuario.apellidoUsuario =apellidoUsuario;
     usuario.estado = estado;
-    usuario.perfil = perfil;
+    usuario.role = role;
     await usuario.save();
     res.status(200).json({
       mensaje: "Usuario actualizado exitosamente.",
       nombre: usuario.nombreUsuario,
       apellido: usuario.apellidoUsuario,
-      uid: usuario._id,
     });
   } catch (error) {
     res.status(400).json({
