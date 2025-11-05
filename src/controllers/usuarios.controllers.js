@@ -148,22 +148,44 @@ export const editarUsuario = async (req, res) => {
   try {
     const { email, password, nombreUsuario, apellidoUsuario, estado, role } = req.body;
     const usuario = await Usuario.findById(req.params.id);
+
     if (!usuario) {
       return res.status(404).json({
         mensaje: "El usuario no fue encontrado.",
       });
     }
+
+    // Validar que el rol sea uno permitido
+    const rolesPermitidos = ["admin", "profesor", "alumno"];
+    if (!rolesPermitidos.includes(role)) {
+      return res.status(404).json({
+        mensaje: `El rol "${role}" no es válido. Debe ser uno de: ${rolesPermitidos.join(", ")}.`,
+      });
+    }
+
     usuario.email = email;
     usuario.nombreUsuario = nombreUsuario;
-    usuario.apellidoUsuario =apellidoUsuario;
+    usuario.apellidoUsuario = apellidoUsuario;
     usuario.estado = estado;
-    usuario.role = role;
+
+    // Buscar el rol en la colección Role
+    const rolEncontrado = await Role.findOne({ nombreRol: role });
+    if (!rolEncontrado) {
+      return res.status(400).json({
+        mensaje: `Rol "${role}" no encontrado en la base de datos.`,
+      });
+    }
+
+    usuario.role = rolEncontrado._id;
+
     await usuario.save();
+
     res.status(200).json({
       mensaje: "Usuario actualizado exitosamente.",
       nombre: usuario.nombreUsuario,
       apellido: usuario.apellidoUsuario,
     });
+
   } catch (error) {
     res.status(400).json({
       mensaje: "No se pudo actualizar el usuario correctamente.",
